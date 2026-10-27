@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PureBites - Report Adulteration</title>
+</head>
+<body>
+    <center>
+        <h2>PureBites: Food Adulteration Portal</h2>
+        <form action="/submit" method="POST" onsubmit="return validateReport()">
+            <label>Product Name: </label>
+            <input type="text" name="product_name" id="product_name">
+            <br><br>
+            <label>Brand Name: </label>
+            <input type="text" name="brand" id="brand">
+            <br><br>
+            <label>Issue Description: </label>
+            <textarea name="description" id="description" rows="4" cols="30"></textarea>
+            <br><br>
+            <button type="submit" name="submit_btn">Submit Report</button>
+        </form>
+    </center>
+
+    <script>
+        function validateReport() {
+            const product = document.getElementById("product_name").value.trim();
+            const desc = document.getElementById("description").value.trim();
+            
+            if (product === "") {
+                alert("Product Name cannot be empty.");
+                return false;
+            }
+            if (desc.length < 15) {
+                alert("Description must be at least 15 characters long to be helpful.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
