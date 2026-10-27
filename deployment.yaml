@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: purebites-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: purebites
+  template:
+    metadata:
+      labels:
+        app: purebites
+    spec:
+      containers:
+        - name: purebites
+          image: hanisha99/hanisha_s_28:purebites-v1
+          ports:
+            - containerPort: 5000
