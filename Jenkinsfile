@@ -13,6 +13,8 @@ pipeline {
                 bat 'start /B python app.py'
                 bat 'ping 127.0.0.1 -n 5 > nul'
                 bat 'python -m pytest -v tests/test_portal.py'
+                // THIS IS THE NEW LINE: It shuts down the local app so Docker can build!
+                bat 'taskkill /F /IM python.exe'
             }
         }
         stage('Build Docker Image') {
