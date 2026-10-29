@@ -1,12 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Report Submitted</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PureBites | Report Logged</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar { background-color: #1e3a8a; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .navbar-brand { font-weight: 600; letter-spacing: 1px; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .success-icon { font-size: 4rem; color: #10b981; margin-bottom: 20px; }
+    </style>
 </head>
 <body>
-    <center>
-        <h2>Thank you for your vigilance!</h2>
-        <p>Your report regarding <b>{{ product }}</b> by <b>{{ brand }}</b> has been successfully recorded.</p>
-    </center>
+
+    <nav class="navbar navbar-dark mb-5">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fa-solid fa-shield-halved me-2"></i> PureBites</a>
+            <span class="navbar-text text-light"><i class="fa-solid fa-check-circle me-1"></i> System Status: Online</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card text-center p-5">
+                    <div class="card-body">
+                        <i class="fa-solid fa-circle-check success-icon"></i>
+                        <h2 class="fw-bold mb-3">Thank you for your vigilance!</h2>
+                        <p class="text-muted fs-5 mb-4">Your report has been successfully recorded in the centralized database and flagged for review.</p>
+                        
+                        <div class="alert alert-primary text-start" role="alert">
+                            <strong><i class="fa-solid fa-file-lines me-2"></i> Log Details:</strong><br>
+                            Product: <b>{{ product }}</b><br>
+                            Brand: <b>{{ brand }}</b>
+                        </div>
+
+                        <a href="/" class="btn btn-outline-secondary mt-3">
+                            <i class="fa-solid fa-arrow-left me-2"></i> Log Another Report
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

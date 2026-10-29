@@ -1,24 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>PureBites - Report Adulteration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PureBites | Enterprise Food Safety</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar { background-color: #1e3a8a; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .navbar-brand { font-weight: 600; letter-spacing: 1px; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: transform 0.3s ease; }
+        .card:hover { transform: translateY(-5px); }
+        .card-header { background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; border-radius: 12px 12px 0 0 !important; padding: 20px; }
+        .btn-primary { background-color: #3b82f6; border: none; padding: 12px 20px; font-weight: 500; border-radius: 8px; transition: background 0.3s; }
+        .btn-primary:hover { background-color: #2563eb; }
+        .form-control:focus { border-color: #3b82f6; box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25); }
+    </style>
 </head>
 <body>
-    <center>
-        <h2>PureBites: Food Adulteration Portal</h2>
-        <form action="/submit" method="POST" onsubmit="return validateReport()">
-            <label>Product Name: </label>
-            <input type="text" name="product_name" id="product_name">
-            <br><br>
-            <label>Brand Name: </label>
-            <input type="text" name="brand" id="brand">
-            <br><br>
-            <label>Issue Description: </label>
-            <textarea name="description" id="description" rows="4" cols="30"></textarea>
-            <br><br>
-            <button type="submit" name="submit_btn">Submit Report</button>
-        </form>
-    </center>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-dark mb-5">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fa-solid fa-shield-halved me-2"></i> PureBites</a>
+            <span class="navbar-text text-light"><i class="fa-solid fa-user-shield me-1"></i> Admin Portal</span>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4 class="mb-0">Log Adulteration Report</h4>
+                        <p class="mb-0 text-light opacity-75 small">Ensure all details are accurate for investigation</p>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="/submit" method="POST" onsubmit="return validateReport()">
+                            
+                            <div class="mb-3">
+                                <label class="form-label text-muted fw-bold"><i class="fa-solid fa-box me-1"></i> Product Name</label>
+                                <input type="text" class="form-control form-control-lg" name="product_name" id="product_name" placeholder="e.g., Toned Milk">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label text-muted fw-bold"><i class="fa-solid fa-tag me-1"></i> Brand Name</label>
+                                <input type="text" class="form-control form-control-lg" name="brand" id="brand" placeholder="e.g., FakeDairy Inc.">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label text-muted fw-bold"><i class="fa-solid fa-triangle-exclamation me-1"></i> Issue Description</label>
+                                <textarea class="form-control" name="description" id="description" rows="4" placeholder="Provide detailed observations..."></textarea>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" name="submit_btn" class="btn btn-primary btn-lg">
+                                    <i class="fa-solid fa-paper-plane me-2"></i> Submit Official Report
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         function validateReport() {
