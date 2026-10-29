@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    options {
+        timeout(time: 15, unit: 'MINUTES')
+    }
     environment {
         PATH = "C:\\Users\\DELL\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Program Files\\Python313\\Scripts;${env.PATH}"
         DOCKER_HOST = 'tcp://localhost:2375'
@@ -9,15 +12,21 @@ pipeline {
         stage('Automated Selenium Testing') {
             steps {
                 echo "Running Selenium Tests using pytest"
-                bat 'pip install --default-timeout=1000 -r requirements.txt'
+                bat 'pip install -r requirements.txt'
                 
-                // NEW FAILSAFE: Kill old ghost processes before starting, ignore errors if none exist
-                bat 'taskkill /F /IM python.exe || exit 0'
+                // Kill any stale python processes before starting
+                bat 'taskkill /F /IM python.exe > nul 2>&1 || exit 0'
                 
-                bat 'start /B python app.py'
+                // Start Flask app in background cleanly detached from stdout/stderr
+                bat 'start "" /B python app.py'
                 bat 'ping 127.0.0.1 -n 5 > nul'
                 bat 'python -m pytest -v tests/test_portal.py'
-                bat 'taskkill /F /IM python.exe'
+            }
+            post {
+                always {
+                    // Ensure Flask server is stopped even if tests fail
+                    bat 'taskkill /F /IM python.exe > nul 2>&1 || exit 0'
+                }
             }
         }
         stage('Build Docker Image') {
