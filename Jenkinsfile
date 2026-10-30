@@ -14,18 +14,20 @@ pipeline {
                 echo "Running Selenium Tests using pytest"
                 bat 'pip install -r requirements.txt'
                 
-                // Kill any stale python processes before starting
+                // Kill any stale processes before starting
                 bat 'taskkill /F /IM python.exe > nul 2>&1 || exit 0'
+                bat 'taskkill /F /IM chromedriver.exe > nul 2>&1 || exit 0'
                 
                 // Start Flask app in background cleanly detached from stdout/stderr
-                bat 'start "" /B python app.py'
-                bat 'ping 127.0.0.1 -n 5 > nul'
+                bat 'start "" /B python -u app.py'
+                bat 'ping 127.0.0.1 -n 6 > nul'
                 bat 'python -m pytest -v tests/test_portal.py'
             }
             post {
                 always {
-                    // Ensure Flask server is stopped even if tests fail
+                    // Ensure test processes and Flask server are stopped cleanly
                     bat 'taskkill /F /IM python.exe > nul 2>&1 || exit 0'
+                    bat 'taskkill /F /IM chromedriver.exe > nul 2>&1 || exit 0'
                 }
             }
         }
