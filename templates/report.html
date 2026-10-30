@@ -3,72 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PureBites | Enterprise Food Safety</title>
-    <!-- Bootstrap 5 CDN -->
+    <title>PureBites | Enterprise Food Safety & Adulteration Surveillance Grid</title>
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome CDN -->
+    <!-- FontAwesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .navbar { background-color: #1e3a8a; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .navbar-brand { font-weight: 600; letter-spacing: 1px; }
-        .card { border: none; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: transform 0.3s ease; }
-        .card:hover { transform: translateY(-5px); }
-        .card-header { background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; border-radius: 12px 12px 0 0 !important; padding: 20px; }
-        .btn-primary { background-color: #3b82f6; border: none; padding: 12px 20px; font-weight: 500; border-radius: 8px; transition: background 0.3s; }
-        .btn-primary:hover { background-color: #2563eb; }
-        .form-control:focus { border-color: #3b82f6; box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25); }
+        :root {
+            --bg-main: #07090e;
+            --bg-surface: #0e131f;
+            --bg-card: #141c2e;
+            --border-glow: rgba(56, 189, 248, 0.2);
+            --accent-cyan: #38bdf8;
+            --accent-blue: #2563eb;
+            --accent-emerald: #10b981;
+            --accent-rose: #f43f5e;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 40%);
+            min-height: 100vh;
+        }
+
+        .navbar-custom {
+            background-color: rgba(14, 19, 31, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .brand-badge {
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 4px;
+            padding: 3px 8px;
+        }
+
+        .telemetry-chip {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 9999px;
+            padding: 6px 16px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .telemetry-chip .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-emerald);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px var(--accent-emerald);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .grid-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grid-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), #6366f1, var(--accent-rose));
+        }
+
+        .form-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .form-control, .form-select {
+            background-color: rgba(11, 15, 25, 0.8) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-cyan) !important;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15) !important;
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: #475569;
+            font-size: 0.88rem;
+        }
+
+        .btn-dispatch {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border: none;
+            padding: 15px 28px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .btn-dispatch:hover {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            box-shadow: 0 12px 30px -5px rgba(59, 130, 246, 0.7);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .stat-mini-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-mini-box h3 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin: 0;
+        }
+
+        .stat-mini-box p {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin: 4px 0 0 0;
+            letter-spacing: 0.05em;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-dark mb-5">
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-3">
         <div class="container">
-            <a class="navbar-brand" href="#"><i class="fa-solid fa-shield-halved me-2"></i> PureBites</a>
-            <span class="navbar-text text-light"><i class="fa-solid fa-user-shield me-1"></i> Admin Portal</span>
+            <a class="navbar-brand d-flex align-items-center text-white fw-bold" href="/">
+                <i class="fa-solid fa-shield-virus me-2 text-info fs-4"></i>
+                <span class="fs-5 tracking-wide">PureBites<span class="text-info">.SOC</span></span>
+                <span class="ms-2 brand-badge">GOV PROTOCOL v4.2</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <div class="telemetry-chip d-none d-md-flex align-items-center gap-2">
+                    <span class="pulse-dot"></span>
+                    <span>Kubernetes Cluster: <b>Port 30088</b></span>
+                </div>
+                <a href="/admin" class="btn btn-outline-info btn-sm px-3 rounded-pill">
+                    <i class="fa-solid fa-chart-line me-1"></i> Admin Audit Log
+                </a>
+            </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card">
-                    <div class="card-header text-center">
-                        <h4 class="mb-0">Log Adulteration Report</h4>
-                        <p class="mb-0 text-light opacity-75 small">Ensure all details are accurate for investigation</p>
+    <!-- Main Container -->
+    <div class="container py-5">
+        
+        <!-- Header Banner -->
+        <div class="row justify-content-center text-center mb-5">
+            <div class="col-lg-9">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-dark border border-secondary mb-3">
+                    <i class="fa-solid fa-satellite-dish text-info small"></i>
+                    <span class="text-secondary small fw-semibold">National Food Adulteration Intelligence Grid</span>
+                </div>
+                <h1 class="fw-extrabold display-6 mb-2">Automated Contamination Surveillance</h1>
+                <p class="text-secondary fs-6">Enterprise reporting portal for forensic adulteration detection, vendor accountability, and regulatory enforcement.</p>
+                
+                <!-- Quick Mini Stats -->
+                <div class="row g-3 justify-content-center mt-3">
+                    <div class="col-6 col-md-3">
+                        <div class="stat-mini-box">
+                            <h3>{{ total_logged }}</h3>
+                            <p>Cases Logged</p>
+                        </div>
                     </div>
-                    <div class="card-body p-4">
-                        <form action="/submit" method="POST" onsubmit="return validateReport()">
-                            
-                            <div class="mb-3">
-                                <label class="form-label text-muted fw-bold"><i class="fa-solid fa-box me-1"></i> Product Name</label>
-                                <input type="text" class="form-control form-control-lg" name="product_name" id="product_name" placeholder="e.g., Toned Milk">
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label text-muted fw-bold"><i class="fa-solid fa-tag me-1"></i> Brand Name</label>
-                                <input type="text" class="form-control form-control-lg" name="brand" id="brand" placeholder="e.g., FakeDairy Inc.">
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label text-muted fw-bold"><i class="fa-solid fa-triangle-exclamation me-1"></i> Issue Description</label>
-                                <textarea class="form-control" name="description" id="description" rows="4" placeholder="Provide detailed observations..."></textarea>
-                            </div>
-
-                            <div class="d-grid">
-                                <button type="submit" name="submit_btn" class="btn btn-primary btn-lg">
-                                    <i class="fa-solid fa-paper-plane me-2"></i> Submit Official Report
-                                </button>
-                            </div>
-                        </form>
+                    <div class="col-6 col-md-3">
+                        <div class="stat-mini-box">
+                            <h3>3 Replicas</h3>
+                            <p>Pod Cluster Live</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="stat-mini-box">
+                            <h3 class="text-success">24/7 CI/CD</h3>
+                            <p>Pipeline Verified</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Main Form Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="grid-card p-4 p-md-5">
+                    
+                    <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-3 mb-4">
+                        <div>
+                            <h4 class="fw-bold mb-1"><i class="fa-solid fa-file-shield text-info me-2"></i> Lodge Adulteration Report</h4>
+                            <span class="text-secondary small">Case Reference: <b>FSSAI-SURV-2026-X</b></span>
+                        </div>
+                        <span class="badge bg-danger bg-opacity-25 text-danger border border-danger px-3 py-2 rounded-pill">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i> Official Audit Entry
+                        </span>
+                    </div>
+
+                    <form action="/submit" method="POST" onsubmit="return validateReport()">
+                        
+                        <!-- Row 1: Product & Brand -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="product_name">
+                                    <i class="fa-solid fa-box-open me-1 text-info"></i> Product Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" name="product_name" id="product_name" placeholder="e.g., Ultra-Pasteurized Toned Milk">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="brand">
+                                    <i class="fa-solid fa-building me-1 text-info"></i> Brand / Manufacturer Name
+                                </label>
+                                <input type="text" class="form-control" name="brand" id="brand" placeholder="e.g., FakeDairy Processors Ltd.">
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Adulteration Company / Facility Address -->
+                        <div class="mb-3">
+                            <label class="form-label" for="company_address">
+                                <i class="fa-solid fa-map-location-dot me-1 text-info"></i> Manufacturer / Facility Physical Address
+                            </label>
+                            <input type="text" class="form-control" name="company_address" id="company_address" placeholder="e.g., Plot 42-A, Industrial Growth Centre, Phase 3, Delhi-NCR">
+                        </div>
+
+                        <!-- Row 3: Batch Number & Severity Rating -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="batch_no">
+                                    <i class="fa-solid fa-barcode me-1 text-info"></i> Batch / Lot Identifier
+                                </label>
+                                <input type="text" class="form-control" name="batch_no" id="batch_no" placeholder="e.g., LOT-2026-B892">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="severity">
+                                    <i class="fa-solid fa-gauge-high me-1 text-info"></i> Contamination Severity
+                                </label>
+                                <select class="form-select" name="severity" id="severity">
+                                    <option value="Critical Risk (Chalk, Detergent, Toxins)" selected>Critical Risk (Chemicals, Toxins, Urea)</option>
+                                    <option value="High Hazard (Starch, Adulterants)">High Hazard (Starch, Chalk Powder)</option>
+                                    <option value="Moderate (Water Dilution, Label Fraud)">Moderate (Dilution, Mislabeled)</option>
+                                    <option value="Suspected Quality Defect">Suspected Quality Defect</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Row 4: Issue Description -->
+                        <div class="mb-4">
+                            <label class="form-label" for="description">
+                                <i class="fa-solid fa-clipboard-list me-1 text-info"></i> Forensic Observations & Evidence Description <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" name="description" id="description" rows="4" placeholder="Detail observed physical anomalies, chemical odor, coagulation, laboratory test strips, or chalk sediment..."></textarea>
+                            <div class="form-text text-secondary mt-1" style="font-size: 0.78rem;">
+                                <i class="fa-solid fa-circle-info me-1"></i> Minimum 15 characters required for forensic admissibility.
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid pt-2">
+                            <button type="submit" name="submit_btn" class="btn btn-dispatch btn-lg">
+                                <i class="fa-solid fa-shield-halved me-2"></i> Submit Official Forensic Report
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center mt-5 pt-4 text-secondary border-top border-dark">
+            <small>&copy; 2026 PureBites Devops Framework &bull; Integrated Weeks 1–12 Lab Architecture &bull; NodePort: 30088</small>
+        </footer>
+
     </div>
 
+    <!-- Client-side JavaScript Validation (Tested by Selenium) -->
     <script>
         function validateReport() {
             const product = document.getElementById("product_name").value.trim();

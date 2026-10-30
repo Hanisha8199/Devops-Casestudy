@@ -2,51 +2,331 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PureBites | Admin Database</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PureBites | Centralized Surveillance & Regulatory Operations Center</title>
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f4f7f6; font-family: 'Segoe UI', sans-serif; }
-        .navbar { background-color: #111827; }
-        .card { border: none; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        :root {
+            --bg-main: #06080e;
+            --bg-card: #0e1424;
+            --bg-surface: #141d33;
+            --border-dim: rgba(255, 255, 255, 0.08);
+            --accent-cyan: #38bdf8;
+            --accent-blue: #3b82f6;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(244, 63, 94, 0.05) 0%, transparent 40%);
+            min-height: 100vh;
+        }
+
+        .navbar-admin {
+            background-color: rgba(14, 20, 36, 0.9);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .telemetry-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dim);
+            border-radius: 14px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .telemetry-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .telemetry-card .stat-icon {
+            font-size: 2rem;
+            opacity: 0.85;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.85rem;
+            font-weight: 700;
+        }
+
+        .table-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dim);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .table-custom {
+            margin-bottom: 0;
+            color: #e2e8f0;
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .table-custom thead th {
+            background: #111827;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table-custom tbody td {
+            background: transparent;
+            padding: 14px 16px;
+            font-size: 0.88rem;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .table-custom tbody tr:hover td {
+            background: rgba(56, 189, 248, 0.04);
+        }
+
+        .search-input {
+            background-color: rgba(6, 8, 14, 0.8) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-cyan) !important;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15) !important;
+        }
+
+        .badge-severity-critical {
+            background: rgba(244, 63, 94, 0.15);
+            color: #fda4af;
+            border: 1px solid rgba(244, 63, 94, 0.35);
+        }
+
+        .badge-severity-high {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fde68a;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+
+        .badge-severity-moderate {
+            background: rgba(56, 189, 248, 0.15);
+            color: #bae6fd;
+            border: 1px solid rgba(56, 189, 248, 0.35);
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-dark mb-4 p-3">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#"><i class="fa-solid fa-server me-2"></i> PureBites Database Records</a>
-            <a href="/" class="btn btn-outline-light btn-sm">Back to Portal</a>
+
+    <!-- Header Navigation -->
+    <nav class="navbar navbar-admin sticky-top py-3">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center">
+                <i class="fa-solid fa-server me-2 text-info fs-4"></i>
+                <span class="fw-bold fs-5 tracking-wide">PureBites<span class="text-info">.Admin</span></span>
+                <span class="badge bg-secondary bg-opacity-25 text-info ms-3 border border-secondary border-opacity-50">
+                    <i class="fa-solid fa-database me-1"></i> SQLite Data Grid
+                </span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-outline-info btn-sm rounded-pill px-3" onclick="exportTableToCSV('purebites_adulteration_records.csv')">
+                    <i class="fa-solid fa-file-csv me-1"></i> Export Incident CSV
+                </button>
+                <a href="/" class="btn btn-outline-light btn-sm rounded-pill px-3">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Incident Entry Portal
+                </a>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="card p-4">
-            <h4 class="mb-4">Logged Adulteration Reports</h4>
-            <table class="table table-hover table-bordered">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Product</th>
-                        <th>Brand</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in reports %}
-                    <tr>
-                        <td>{{ row[0] }}</td>
-                        <td><span class="badge bg-primary">{{ row[1] }}</span></td>
-                        <td>{{ row[2] }}</td>
-                        <td class="text-muted">{{ row[3] }}</td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="4" class="text-center text-muted py-4">No reports logged in the database yet.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <div class="container-fluid px-4 py-4">
+
+        <!-- Top Overview Statistics Row -->
+        <div class="row g-3 mb-4">
+            <div class="col-sm-6 col-xl-3">
+                <div class="telemetry-card">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <span class="text-secondary small text-uppercase fw-semibold">Total Logged Dockets</span>
+                            <div class="stat-value text-white mt-1">{{ total_reports }}</div>
+                            <span class="text-secondary small"><i class="fa-solid fa-check-double text-success me-1"></i> Persistent in SQLite</span>
+                        </div>
+                        <div class="stat-icon text-info"><i class="fa-solid fa-folder-closed"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+                <div class="telemetry-card">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <span class="text-secondary small text-uppercase fw-semibold">Critical Hazard Violations</span>
+                            <div class="stat-value text-danger mt-1">{{ critical_count }}</div>
+                            <span class="text-secondary small"><i class="fa-solid fa-radiation text-danger me-1"></i> Requiring Forensic Recall</span>
+                        </div>
+                        <div class="stat-icon text-danger"><i class="fa-solid fa-biohazard"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+                <div class="telemetry-card">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <span class="text-secondary small text-uppercase fw-semibold">Active Inspections</span>
+                            <div class="stat-value text-warning mt-1">{{ active_cases }}</div>
+                            <span class="text-secondary small"><i class="fa-solid fa-spinner fa-spin text-warning me-1"></i> Field Officers Dispatched</span>
+                        </div>
+                        <div class="stat-icon text-warning"><i class="fa-solid fa-user-shield"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+                <div class="telemetry-card">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <span class="text-secondary small text-uppercase fw-semibold">Kubernetes Deployment</span>
+                            <div class="stat-value text-success mt-1">3 Pods</div>
+                            <span class="text-secondary small"><i class="fa-solid fa-circle-nodes text-success me-1"></i> NodePort: 30088 Live</span>
+                        </div>
+                        <div class="stat-icon text-success"><i class="fa-solid fa-cubes"></i></div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- Filter & Search Controls -->
+        <div class="table-panel p-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+                <div>
+                    <h5 class="fw-bold mb-1"><i class="fa-solid fa-list-check text-info me-2"></i> Adulteration Investigation Records</h5>
+                    <span class="text-secondary small">Real-time centralized logs aggregated from citizen and lab reports.</span>
+                </div>
+                <div class="d-flex gap-2" style="max-width: 380px; width: 100%;">
+                    <input type="text" id="filterInput" class="form-control search-input" placeholder="Search by product, brand, address..." onkeyup="filterTable()">
+                </div>
+            </div>
+
+            <!-- Table of Records -->
+            <div class="table-responsive">
+                <table class="table table-custom table-hover align-middle" id="reportsTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">Case ID</th>
+                            <th>Product Name</th>
+                            <th>Brand</th>
+                            <th>Company / Facility Address</th>
+                            <th>Batch No</th>
+                            <th>Severity</th>
+                            <th>Forensic Observations</th>
+                            <th>Timestamp</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in reports %}
+                        <tr>
+                            <td><span class="fw-bold text-info" style="font-family: 'JetBrains Mono', monospace;">#PB-{{ row[0] }}</span></td>
+                            <td><span class="badge bg-primary bg-opacity-25 text-primary border border-primary px-2 py-1">{{ row[1] }}</span></td>
+                            <td class="fw-semibold text-white">{{ row[2] }}</td>
+                            <td class="text-secondary small"><i class="fa-solid fa-location-dot me-1 text-danger"></i>{{ row[3] }}</td>
+                            <td><span style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;" class="text-secondary">{{ row[4] }}</span></td>
+                            <td>
+                                {% if 'critical' in (row[5]|lower) %}
+                                    <span class="badge badge-severity-critical px-2 py-1 rounded-pill"><i class="fa-solid fa-fire me-1"></i>{{ row[5] }}</span>
+                                {% elif 'high' in (row[5]|lower) %}
+                                    <span class="badge badge-severity-high px-2 py-1 rounded-pill"><i class="fa-solid fa-triangle-exclamation me-1"></i>{{ row[5] }}</span>
+                                {% else %}
+                                    <span class="badge badge-severity-moderate px-2 py-1 rounded-pill"><i class="fa-solid fa-circle-check me-1"></i>{{ row[5] }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-secondary small" style="max-width: 280px; white-space: normal;">{{ row[6] }}</td>
+                            <td class="text-secondary small" style="white-space: nowrap;">{{ row[7] }}</td>
+                            <td>
+                                <span class="badge bg-warning bg-opacity-25 text-warning border border-warning px-2 py-1 rounded-pill">
+                                    <i class="fa-solid fa-magnifying-glass me-1"></i>{{ row[8] }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="9" class="text-center py-5 text-secondary">
+                                <i class="fa-solid fa-folder-open fs-2 mb-3 d-block opacity-50"></i>
+                                No adulteration incident reports currently recorded in the centralized datastore.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="mt-4 text-center text-secondary small">
+            PureBites DevOps Continuous Compliance Grid &bull; Automated Deployment on Kubernetes &bull; NodePort: 30088
+        </footer>
+
     </div>
+
+    <!-- Interactive Filtering & CSV Export JavaScript -->
+    <script>
+        function filterTable() {
+            const input = document.getElementById("filterInput");
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById("reportsTable");
+            const tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                const text = tr[i].textContent.toLowerCase();
+                if (text.indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        function exportTableToCSV(filename) {
+            let csv = [];
+            const rows = document.querySelectorAll("#reportsTable tr");
+            
+            for (let i = 0; i < rows.length; i++) {
+                let row = [], cols = rows[i].querySelectorAll("td, th");
+                for (let j = 0; j < cols.length; j++) {
+                    let data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s+)/gm, ' ');
+                    data = data.replace(/"/g, '""');
+                    row.push('"' + data + '"');
+                }
+                csv.push(row.join(","));
+            }
+
+            const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+            const downloadLink = document.createElement("a");
+            downloadLink.download = filename;
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+    </script>
 </body>
 </html>

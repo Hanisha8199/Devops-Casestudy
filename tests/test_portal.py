@@ -15,7 +15,10 @@ def setup_teardown():
     options.add_argument("--window-size=1920,1080")
     driver = webdriver.Chrome(options=options)
     yield driver
-    driver.quit()
+    try:
+        driver.quit()
+    except Exception:
+        pass
 
 def get_alert_text(driver):
     alert = Alert(driver)

@@ -3,45 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PureBites | Report Logged</title>
+    <title>PureBites | Docket Registered Successfully</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .navbar { background-color: #1e3a8a; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .navbar-brand { font-weight: 600; letter-spacing: 1px; }
-        .card { border: none; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-        .success-icon { font-size: 4rem; color: #10b981; margin-bottom: 20px; }
+        :root {
+            --bg-main: #07090e;
+            --bg-card: #141c2e;
+            --accent-cyan: #38bdf8;
+            --accent-emerald: #10b981;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background-image: radial-gradient(circle at 50% 30%, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
+        }
+
+        .success-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(16, 185, 129, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .success-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #38bdf8);
+        }
+
+        .pulse-icon-wrapper {
+            width: 90px;
+            height: 90px;
+            background: rgba(16, 185, 129, 0.12);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px auto;
+            color: var(--accent-emerald);
+            font-size: 2.8rem;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+        }
+
+        .docket-details {
+            background: rgba(7, 9, 14, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #ffffff;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-dark mb-5">
-        <div class="container">
-            <a class="navbar-brand" href="#"><i class="fa-solid fa-shield-halved me-2"></i> PureBites</a>
-            <span class="navbar-text text-light"><i class="fa-solid fa-check-circle me-1"></i> System Status: Online</span>
-        </div>
-    </nav>
-
-    <div class="container">
+    <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
-                <div class="card text-center p-5">
-                    <div class="card-body">
-                        <i class="fa-solid fa-circle-check success-icon"></i>
-                        <h2 class="fw-bold mb-3">Thank you for your vigilance!</h2>
-                        <p class="text-muted fs-5 mb-4">Your report has been successfully recorded in the centralized database and flagged for review.</p>
-                        
-                        <div class="alert alert-primary text-start" role="alert">
-                            <strong><i class="fa-solid fa-file-lines me-2"></i> Log Details:</strong><br>
-                            Product: <b>{{ product }}</b><br>
-                            Brand: <b>{{ brand }}</b>
-                        </div>
+                <div class="success-card p-4 p-md-5 text-center">
+                    
+                    <div class="pulse-icon-wrapper">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
 
-                        <a href="/" class="btn btn-outline-secondary mt-3">
-                            <i class="fa-solid fa-arrow-left me-2"></i> Log Another Report
+                    <span class="badge bg-success bg-opacity-25 text-success border border-success px-3 py-1 rounded-pill mb-3">
+                        <i class="fa-solid fa-lock me-1"></i> SECURE AUDIT RECORD #PB-{{ report_id if report_id else '2026' }}
+                    </span>
+
+                    <h2 class="fw-bold mb-2">Thank you for your vigilance!</h2>
+                    <p class="text-secondary mb-4 fs-6">
+                        Your forensic adulteration report has been written to the distributed SQLite datastore and dispatched to regulatory inspectors.
+                    </p>
+
+                    <!-- Case Information Card -->
+                    <div class="docket-details mb-4">
+                        <div class="detail-row">
+                            <span class="detail-label"><i class="fa-solid fa-box text-info me-2"></i>Product:</span>
+                            <span class="detail-value text-info">{{ product }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label"><i class="fa-solid fa-industry text-info me-2"></i>Brand / Manufacturer:</span>
+                            <span class="detail-value">{{ brand }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label"><i class="fa-solid fa-location-dot text-info me-2"></i>Facility Address:</span>
+                            <span class="detail-value text-wrap text-end" style="max-width: 60%;">{{ company_address }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label"><i class="fa-solid fa-barcode text-info me-2"></i>Lot Number:</span>
+                            <span class="detail-value">{{ batch_no }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label"><i class="fa-solid fa-triangle-exclamation text-danger me-2"></i>Severity:</span>
+                            <span class="detail-value text-warning">{{ severity }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center">
+                        <a href="/" class="btn btn-outline-light px-4 py-2 rounded-pill">
+                            <i class="fa-solid fa-plus me-1"></i> File New Incident
+                        </a>
+                        <a href="/admin" class="btn btn-info px-4 py-2 rounded-pill text-dark fw-bold">
+                            <i class="fa-solid fa-gauge-high me-1"></i> Open Admin SOC Grid
                         </a>
                     </div>
+
                 </div>
             </div>
         </div>
